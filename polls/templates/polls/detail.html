@@ -1,19 +1,56 @@
-<h1>{{ question.question_text }}</h1>
-
-{% if error_message %}
-<p>
-    <strong>{{ error_message }}</strong>
-</p>
-{% endif %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Mono' rel='stylesheet' type='text/css'>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}"/>
+</head>
+<body>
+<div class="jumbotron">
+    <h1>{{ question.question_text }}</h1>
+</div>
 
 <form action="{% url 'polls:vote' question.id %}" method="post">
     {% csrf_token %}        <!-- Avoids Cross Site Request Forgeries -->
-    {% for choice in question.choice_set.all %}
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"/>
-    <label for="choice{{ forloop.counter }}">
-        {{choice.choice_text}}
-    </label>
+    <div class="content row">
+        <div class="col-lg-2">
+                {% for choice in question.choice_set.all %}
+                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"/>
+                    <label for="choice{{ forloop.counter }}">
+                        {{choice.choice_text}}
+                    </label>
+                    <br/>
+                {% endfor %}
+        </div>
+    </div>
+    </br>
+    <div class="content row">
+        <div class="col-lg-6">
+            <input type="submit" class="btn btn-primary" aria-label="Left Align" value="Vote"/>
+        </div>
+    </div>
     <br/>
-    {% endfor %}
-    <input type="submit" value="Vote"/>
+    {% if error_message %}
+    <div class="content row">
+        <div class="col-lg-6">
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"><strong>{{ error_message }}</strong></span>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class=".text-center"><a href="{% url 'polls:index' %}">Go back</a></div>
+        </div>
+        <div class="col-xs-6">
+            <div class=".text-center"><a href="{% url 'polls:results' question.id %}">View results</a></div>
+        </div>
+    </div>
+</div>
 </form>
+</body>
+</html>

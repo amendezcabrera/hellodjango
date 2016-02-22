@@ -1,0 +1,12 @@
+* {
+ font-size: 100%;
+ font-family: 'Roboto Mono';
+}
+
+a {
+    color: #FCA205;
+}
+
+.content {
+    margin-left: 40px;
+}
